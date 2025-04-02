@@ -12,7 +12,7 @@ MPU6050 mpu;
 Timer time;
 BLECharacteristic *pCharacteristic;
 bool deviceConnected = false;
-int txValue = 0;
+JsonDocument txValue;
 
 #define SERVICE_UUID = NULL //theres a UUID for each esp32 from the FCC we jsut put that data here and copy it below
 #define CHARACTERISTIC_UUID_TX = NULL
@@ -32,7 +32,7 @@ class MyServerCallBacks: public BLEServerCallbacks {
 
   void onDisconnect(BLEServer* pServer){
     deviceConnected = false;
-  }
+  };
 
 };
 
