@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import json
+from PIL import Image, ImageTk
 
 
 
@@ -44,8 +45,15 @@ def placeLeaderboard():
     nameEntry.place(x=600,y=200)
     nameEntryButton = ctk.CTkButton(width=50,height=50,text="ENTER",fg_color="green",font=("Arial",20),text_color="gray99", master=app)
     nameEntryButton.place(x=980,y=205)
-    panel = ctk.CTkImage(image = "Bell Drawing", master=app)
-    panel.place(x=600,y=600)
+
+    image = Image.open("NTHS_ICT\Bell Drawing.png") 
+    photo = ImageTk.PhotoImage(image)
+    
+    image_label = ctk.CTkLabel(image=photo,text="",width=20, master=app)
+    image_label.place(x=1200,y=0)
+
+    dinger = ctk.CTkLabel(width=40,height=30,text="",fg_color="gray77",master=app)
+    dinger.place(x=1405,y=900)
 
 placeLeaderboard()
 
