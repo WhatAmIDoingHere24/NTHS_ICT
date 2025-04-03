@@ -3,8 +3,8 @@ import json
 
 
 
-highestRecord = 30
-highestRecordName = "jett"
+currentScore = 30
+
 
 ctk.set_appearance_mode("System")  # Modes: system (default), light, dark
 ctk.set_default_color_theme("blue")  # Themes: blue (default), dark-blue, green
@@ -32,7 +32,20 @@ def placeLeaderboard():
         inty+=80
     LEADERBOARD = ctk.CTkLabel(width=499,height=79,text_color="white",text="Leaderboard", font=("Arial",50),master=app)
     LEADERBOARD.place(x=0,y=0)
-    
+    StartButton = ctk.CTkButton(width=400,height=150,text="START",fg_color="green",corner_radius=50,font=("Arial",50),text_color="gray99",master=app)
+    StartButton.place(x=50,y=600)
+    ResetButton = ctk.CTkButton(width=400,height=150,text="RESET",fg_color="orange2",corner_radius=50,font=("Arial",50),text_color="gray99", master=app)
+    ResetButton.place(x=50,y=800)
+    scoreTitle = ctk.CTkLabel(width=50,height=20,text_color="white",text="Current Score:", font=("Arial",50),master=app)
+    scoreTitle.place(x=600, y=20)
+    scoreLabel = ctk.CTkLabel(width=50,height=20,text_color="white",text=currentScore, font=("Arial",50),master=app)
+    scoreLabel.place(x=740, y=100)
+    nameEntry = ctk.CTkEntry(width=350,height=50,master=app,font=("Arial",50))
+    nameEntry.place(x=600,y=200)
+    nameEntryButton = ctk.CTkButton(width=50,height=50,text="ENTER",fg_color="green",font=("Arial",20),text_color="gray99", master=app)
+    nameEntryButton.place(x=980,y=205)
+    panel = ctk.CTkImage(image = "Bell Drawing", master=app)
+    panel.place(x=600,y=600)
 
 placeLeaderboard()
 
