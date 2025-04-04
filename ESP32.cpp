@@ -63,12 +63,12 @@ bool connectedTimer() {
 }
 
 //create and retrieve current offset values
-int accelX = mpu.getXAccelOffset();
-int accelY = mpu.getYAccelOffset();
-int accelZ = mpu.getZAccelOffset();
-int gyroX = mpu.getXAccelOffset();
-int gyroY = mpu.getYAccelOffset();
-int gyroZ = mpu.getZAccelOffset();
+float accelX = mpu.getXAccelOffset();
+float accelY = mpu.getYAccelOffset();
+float accelZ = mpu.getZAccelOffset();
+float gyroX = mpu.getXAccelOffset();
+float gyroY = mpu.getYAccelOffset();
+float gyroZ = mpu.getZAccelOffset();
 
 //create the JSON format
 JsonDocument mpuData;
@@ -80,7 +80,7 @@ mpuData["gyro_x"] = gyroX;
 mpuData["gyro_y"] = gyroY;
 mpuData["gyro_z"] = gyroZ;
 
-//serializeJson(mpuData, Serial);
+serializeJson(mpuData, Serial);
 
 
 
