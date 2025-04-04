@@ -10,31 +10,42 @@
 
 MPU6050 mpu;
 Timer time;
-BLECharacteristic *pCharacteristic;
 bool deviceConnected = false;
 JsonDocument txValue;
 
 #define SERVICE_UUID = NULL //theres a UUID for each esp32 from the FCC we jsut put that data here and copy it below
-#define CHARACTERISTIC_UUID_TX = NULL
 //defines the output format of the mpu data
 #define OUTPUT_READABLE_ACCELGYRO
 
-//creates a few 16 bit sighned intergers for each axis
-int16_t ax, ay, az;
-int16_t gx, gy, gz;
+//begin the bluetooth low energy device
+BLE.begin();
+
+//set device BLE device values for transmission
+BLE.setAdvertisedServiceUuid(SERVICE_UUID);
+BLE.setAdvertisedService(SERVICE_UUID);
+BLE.setLocalName("NTHS Paddle");
+BLE.setDeviceName("NTHS Paddle ESP32");
 
 
-class MyServerCallBacks: public BLEServerCallbacks {
-  
-  void onConnect(BLEServer* pServer) {
+While(!bleDevice.connected()){
+  Serial.println("Looking for connection...");
+  //begin advertising the BLE device
+  BLE.advertise();
+  if(bleDevice.connected()){
+    //stop advertising the BLE device
+    BLE.stopAdvertise()
+    Serial.println("the signal strength of the connection is: " {BLE.rssi()});
     deviceConnected = true;
-  };
+    break;
+  }
+}
 
-  void onDisconnect(BLEServer* pServer){
-    deviceConnected = false;
-  };
 
-};
+
+
+
+
+
 
 bool connectedTimer() {
   if(deviceConnected) {
@@ -51,10 +62,10 @@ bool connectedTimer() {
   }
 }
 
+//create and retrieve current offset values
 int accelX = mpu.getXAccelOffset();
 int accelY = mpu.getYAccelOffset();
 int accelZ = mpu.getZAccelOffset();
-
 int gyroX = mpu.getXAccelOffset();
 int gyroY = mpu.getYAccelOffset();
 int gyroZ = mpu.getZAccelOffset();
@@ -71,6 +82,9 @@ mpuData["gyro_z"] = gyroZ;
 
 //serializeJson(mpuData, Serial);
 
+
+
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(38400);
@@ -84,7 +98,7 @@ void setup() {
   Serial.println("starting MPU");
 
   mpu.initialize();
-  Serial.println("running checks.....");
+  Serial.println("running test.....");
   if(mpu.testConnection() == false){
     Serial.println("testing failed");
   } else {
@@ -96,38 +110,15 @@ void setup() {
   mpu.setXAccelOffset(0); 
   mpu.setYAccelOffset(0); 
   mpu.setZAccelOffset(0);
+  Serial.println("accelration is zero'd");
   mpu.setXGyroOffset(0);  
   mpu.setYGyroOffset(0); 
   mpu.setZGyroOffset(0);  
-
+  Serial.println("Gyroscope is zero'd");
   Serial.println("Device is now zeroed to current pos");
   Serial.println("Setting current values");
-
-
-
-
-  //create bluetooth device
-  BLEDevice::init("dope paddle");
-
-  //create bluetooth server
-  BLEServer *pServer = BLEServer::createServer();
-  pServer->setCallbacks(new MyServerCallbacks());
-
-  //actually create the signal
-  BLEService *pService = pServer->createService(SERVICE_UUID);
-
-  //create a bluetooth chararicteristic
-  pCharacteristic = pService->createCharacteristic(CHARACTERISTIC_UUID_TX,BLECharacteristic::PROPERTY_NOTIFY);
-
-  //send bluetooth notification out
-  pCharacteristic->addDescriptor(new BLE2902());
-
-  pService->start();
-
-  pServer->getAdvertising()->start();
   
-  Serial.println("waiting for connection....");
-}
+  
 
 
 
@@ -146,16 +137,8 @@ void loop() {
   
   if(connectedTimer()) {//checks that the device has been connected for 3 seconds
     txValue = mpuData["gyro_x"]["gyro_y"]["gyro_z"]["accelration_x"]["accelration_y"]["accelration_z"]; //txValue will transmit all the current values of mpuData
-    //convert txValue into bytes
-    //char txString[8];
-    //dtostrf(txValue, 1, 2, txString);
-
-    //sets txValue to the charecteristic of the device (the data to send)
-    pCharacteristic->setValue(txValue);//txString
-
-    //actually send data
-    pCharacteristic->notify();
-    Serial.println("IT WORKED: " + String(txValue));
+    //data to send
+    bleCharacteristic(SERVICE_UUID, txValue);
     
   }
 
@@ -165,4 +148,3 @@ void loop() {
 
 
 }
-
