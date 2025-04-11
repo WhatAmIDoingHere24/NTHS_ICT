@@ -3,4 +3,4 @@
 # SPONSERS
 ### NTHS Of Temecula Valley High School | ICT Program Of TVHS
 # MEMBERS
-### Jett Kirby , Brayden Cunningham , Owen Parsley , Lucas Thatcher , Landon Gemmil , Elia Reinholz , Brandon Veron
+### Jett Kirby , Brayden Cunningham , Owen Parsley , Lucas Thatcher , Landon Gemmil
