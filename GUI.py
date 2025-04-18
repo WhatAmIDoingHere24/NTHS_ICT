@@ -3,8 +3,12 @@ import json
 from PIL import Image, ImageTk
 
 
-
 currentScore = 30
+highestScore = 0
+
+if currentScore > highestScore :
+    highestScore = currentScore
+
 
 
 ctk.set_appearance_mode("System")  # Modes: system (default), light, dark
@@ -17,8 +21,9 @@ canvas.config(background="white")
 canvas.place(x=0,y=0)
 
 
-names = ["one","two","three","four","five"]
-scores = [1,2,3,4,5]
+names = []
+scores = []
+
 
 def placeLeaderboard():
     canvas.create_rectangle(0, 0, 500, 500, fill="grey20", width=2) #grey14 to match background
@@ -39,14 +44,14 @@ def placeLeaderboard():
     ResetButton.place(x=50,y=800)
     scoreTitle = ctk.CTkLabel(width=50,height=20,text_color="white",text="Current Score:", font=("Arial",50),master=app)
     scoreTitle.place(x=600, y=20)
-    scoreLabel = ctk.CTkLabel(width=50,height=20,text_color="white",text=currentScore, font=("Arial",50),master=app)
+    scoreLabel = ctk.CTkLabel(width=50,height=20,text_color="white",text=highestScore, font=("Arial",50),master=app)
     scoreLabel.place(x=740, y=100)
     nameEntry = ctk.CTkEntry(width=350,height=50,master=app,font=("Arial",50))
     nameEntry.place(x=600,y=200)
     nameEntryButton = ctk.CTkButton(width=50,height=50,text="ENTER",fg_color="green",font=("Arial",20),text_color="gray99", master=app)
     nameEntryButton.place(x=980,y=205)
 
-    image = Image.open("NTHS_ICT\Bell Drawing.png") 
+    image = Image.open("Bell Drawing.png") 
     photo = ImageTk.PhotoImage(image)
     
     image_label = ctk.CTkLabel(image=photo,text="",width=20, master=app)
